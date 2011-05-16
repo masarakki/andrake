@@ -11,9 +11,14 @@ describe Andrake::Generator::Rakefile do
   end
   
   describe ".create_file" do
-    
+    it "open :rakefile with 'w' mode" do
+      File.stub(:read) { 'string' }
+      
+      File.should_receive(:open).with(Andrake::Generator::Rakefile.send(:rakefile), 'w')
+      Andrake::Generator::Rakefile.send(:create_file)
+    end
   end
-  
+ 
   describe ".run!" do
     it "check and create" do
       Andrake::Generator::Rakefile.should_receive(:check_file)
