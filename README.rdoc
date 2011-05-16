@@ -1,6 +1,9 @@
 = andrake
 
-Description goes here.
+rake tasks for android development
+
+== tasks
+* nothing yet
 
 == Contributing to andrake
  
