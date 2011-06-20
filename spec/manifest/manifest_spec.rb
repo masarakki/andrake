@@ -20,13 +20,4 @@ describe Andrake::Manifest do
       end
     end
   end
-
-  describe "instance methods" do
-    subject { Andrake::Manifest.new(@manifest) }
-    its(:version) { "0.8.1" }
-    its(:version_major) { should eq(0) }
-    its(:version_minor) { should eq(8) }
-    its(:version_patch) { should eq(1) }
-    its(:version_code) { should eq(25) }
-  end
 end
