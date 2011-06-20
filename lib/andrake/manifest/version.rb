@@ -21,6 +21,11 @@ module Andrake::Manifest::Version
     self.version_code += 1
   end
 
+  def update_version
+    manifest["android:versionName"] = version.to_s
+    manifest["android:versionCode"] = version_code.to_s
+  end
+
   [:major, :minor, :patch, :code].each do |element|
     val_name = "@version_#{element}".to_sym
 
@@ -37,10 +42,15 @@ module Andrake::Manifest::Version
     protected "version_#{element}=".to_sym
   end
 
+  private
+  def manifest
+    @manifest ||= @document.xpath('/manifest').first
+  end
+
   def load_version
-    manifest = @document.xpath('/manifest').first
     @version_major, @version_minor, @version_patch = manifest["versionName"].split(/\./).map(&:to_i) + [0, 0, 0]
     @version_code = manifest["versionCode"].to_i
     true
   end
 end
+
