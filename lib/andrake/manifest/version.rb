@@ -1,6 +1,6 @@
 module Andrake::Manifest::Version
   def version
-    @version ||= load_version
+    [version_major, version_minor, version_patch].join(".")
   end
 
   def version_major
@@ -21,6 +21,8 @@ module Andrake::Manifest::Version
   def version_code
     @version_code ||= @document.xpath('/manifest').first["versionCode"].to_i
   end
+
+
 
   private
   def load_version
