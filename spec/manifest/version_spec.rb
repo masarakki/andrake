@@ -2,10 +2,14 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Andrake::Manifest do
   before(:all) do
-    @manifest = File.read(File.expand_path(File.dirname(__FILE__) + '/AndroidManifest.xml'))
+    @manifest_file = File.read(File.expand_path(File.dirname(__FILE__) + '/AndroidManifest.xml'))
   end
 
-  subject { Andrake::Manifest.new(@manifest) }
+  before do
+    @manifest = Andrake::Manifest.new(@manifest_file)
+  end
+
+  subject { @manifest }
   its(:version) { "0.8.1" }
   its(:version_major) { should eq(0) }
   its(:version_minor) { should eq(8) }
@@ -13,12 +17,9 @@ describe Andrake::Manifest do
   its(:version_code) { should eq(25) }
 
   describe "#bump_major" do
-    subject do
-      manifest = Andrake::Manifest.new(@manifest)
-      manifest.bump_major
-      manifest
-    end
+    subject { @manifest.bump_major }
 
+    it { should eq(@manifest) }
     its(:version_major) { should eq(1) }
     its(:version_minor) { should eq(0) }
     its(:version_patch) { should eq(0) }
@@ -26,13 +27,9 @@ describe Andrake::Manifest do
   end
 
   describe "#bump_minor" do
-    before(:all) do
-      @manifest = Andrake::Manifest.new(@manifest)
-      @manifest.bump_minor
-    end
+    subject { @manifest.bump_minor }
 
-    subject { @manifest }
-
+    it { should eq(@manifest) }
     its(:version_major) { should eq(0) }
     its(:version_minor) { should eq(9) }
     its(:version_patch) { should eq(0) }
@@ -40,12 +37,9 @@ describe Andrake::Manifest do
   end
 
   describe "#bump_patch" do
-    subject do
-      manifest = Andrake::Manifest.new(@manifest)
-      manifest.bump_patch
-      manifest
-    end
+    subject { @manifest.bump_patch }
 
+    it { should eq(@manifest) }
     its(:version_major) { should eq(0) }
     its(:version_minor) { should eq(8) }
     its(:version_patch) { should eq(2) }
@@ -54,10 +48,9 @@ describe Andrake::Manifest do
 
   describe "#load_version reload version elements from Nokogiri instance" do
     subject do
-      manifest = Andrake::Manifest.new(@manifest)
-      manifest.bump_patch
-      manifest.send(:load_version)
-      manifest
+      @manifest.bump_patch
+      @manifest.send(:load_version)
+      @manifest
     end
 
     its(:version_major) { should eq(0) }
@@ -68,16 +61,24 @@ describe Andrake::Manifest do
 
   describe "#update set version elements to Nokogiri instance" do
     subject do
-      manifest = Andrake::Manifest.new(@manifest)
-      manifest.bump_patch
-      manifest.update_version
-      manifest.send(:load_version)
-      manifest
+      @manifest.bump_patch.update_version
+      @manifest.send(:load_version)
+      @manifest
     end
 
     its(:version_major) { should eq(0) }
     its(:version_minor) { should eq(8) }
     its(:version_patch) { should eq(2) }
     its(:version_code) { should eq(26) }
+  end
+
+  describe "bump_version and save xml" do
+    subject { @manifest }
+    it "should recieve bump, update_version, save" do
+      @manifest.should_receive(:bump_patch).ordered { @manifest }
+      @manifest.should_receive(:update_version).ordered { @manifest }
+      @manifest.should_receive(:save).ordered { true }
+      @manifest.bump_patch!.should be_true
+    end
   end
 end

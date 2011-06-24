@@ -8,22 +8,32 @@ module Andrake::Manifest::Version
     self.version_minor = 0
     self.version_patch = 0
     self.version_code += 1
+    self
   end
 
   def bump_minor
     self.version_minor += 1
     self.version_patch = 0
     self.version_code += 1
+    self
   end
 
   def bump_patch
     self.version_patch += 1
     self.version_code += 1
+    self
   end
 
   def update_version
     manifest["android:versionName"] = version.to_s
     manifest["android:versionCode"] = version_code.to_s
+    self
+  end
+
+  [:major, :minor, :patch].each do |element|
+    define_method("bump_#{element}!".to_sym) do
+      send("bump_#{element}".to_sym).update_version.save
+    end
   end
 
   [:major, :minor, :patch, :code].each do |element|
