@@ -12,6 +12,11 @@ class Andrake::Manifest
     @document = ::Nokogiri::XML(xml)
   end
 
+  def save
+    File.open(self.class.manifest_file, 'w') do |f|
+      @document.write_xml_to f
+    end
+  end
 
   include Version
 end
