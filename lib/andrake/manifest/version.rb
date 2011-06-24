@@ -33,6 +33,7 @@ module Andrake::Manifest::Version
   [:major, :minor, :patch].each do |element|
     define_method("bump_#{element}!".to_sym) do
       send("bump_#{element}".to_sym).update_version.save
+      self
     end
   end
 

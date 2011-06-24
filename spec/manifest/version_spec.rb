@@ -78,7 +78,7 @@ describe Andrake::Manifest do
       @manifest.should_receive(:bump_patch).ordered { @manifest }
       @manifest.should_receive(:update_version).ordered { @manifest }
       @manifest.should_receive(:save).ordered { true }
-      @manifest.bump_patch!.should be_true
+      @manifest.bump_patch!.should eq(@manifest)
     end
   end
 end

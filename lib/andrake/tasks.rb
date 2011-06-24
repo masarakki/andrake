@@ -18,23 +18,20 @@ class Andrake::Tasks < ::Rake::TaskLib
       namespace :bump do
         desc "bump major version"
         task :major do
-          manifest = Andrake::Manifest.load
-          manifest.bump_major
-          puts "major update to #{manifest.version} (not implemented)"
+          manifest = Andrake::Manifest.load.bump_major!
+          puts "major update to #{manifest.version}"
         end
 
         desc "bump minor version"
         task :minor do
-          manifest = Andrake::Manifest.load
-          manifest.bump_minor
-          puts "minor update to #{manifest.version} (not implemented)"
+          manifest = Andrake::Manifest.load.bump_minor!
+          puts "minor update to #{manifest.version}"
         end
 
         desc "bump patch version"
         task :patch do
-          manifest = Andrake::Manifest.load
-          manifest.bump_patch
-          puts "patch update #{manifest.version} (not implemented)"
+          manifest = Andrake::Manifest.load.bump_patch!
+          puts "patch update to #{manifest.version}"
         end
       end
     end
