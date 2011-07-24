@@ -2,7 +2,15 @@
 
 rake tasks for android development
 
-== tasks
+== initialize
+ andrake new
+
+and create Rakefile
+
+== generate
+ andrake g activity # not implemented
+
+== Rake tasks
 count up version of AndroidManifest.xml automaticaly
 
 by
@@ -23,6 +31,6 @@ by
 
 == Copyright
 
-Copyright (c) 2011 Yamada Masaki. See LICENSE.txt for
+Copyright (c) 2011 masarakki. See LICENSE.txt for
 further details.
 
